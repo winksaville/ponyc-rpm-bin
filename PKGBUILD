@@ -9,8 +9,9 @@ arch=('x86_64')
 url="https://www.ponylang.org/"
 license=('BSD')
 depends=('zlib' 'ncurses5-compat-libs')
+makedepends=('gnupg' 'git' 'make' 'pandoc')
 provides=("ponyc=$_ver")
-conflicts=('ponyc')
+conflicts=('ponyc' 'ponyc-rpm')
 
 validpgpkeys=('8756C4F765C9AC3CB6B85D62379CE192D401AB61')
 source=("https://raw.githubusercontent.com/ponylang/ponyc/${_ver}/LICENSE")

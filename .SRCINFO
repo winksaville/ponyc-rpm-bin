@@ -8,6 +8,7 @@ pkgbase = ponyc-rpm-bin
 	makedepends = gnupg
 	makedepends = git
 	makedepends = make
+	makedepends = pandoc
 	depends = zlib
 	depends = ncurses5-compat-libs
 	provides = ponyc=0.20.0

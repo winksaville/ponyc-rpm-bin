@@ -1,5 +1,5 @@
 # Install ponyc binaries from .rpm files
-This installs ponyc using `makepkg -si` from the release .rpm
+This installs ponyc from the release .rpm
 files on [bintray](https://bintray.com/pony-language/ponyc-rpm).
 
 The current ponyc package installed via pacman is not compatible with
@@ -9,12 +9,21 @@ It is also not possible to build ponyc from source for
 the same reason. [Issue 2303](https://github.com/ponylang/ponyc/pull/2303)
 is tracking the problem.
 
-## Pony install/uninstall using ponyc-rpm-bin
-### Prerequisites: `git` `zlib` `ncurses5-compat-libs`
-
-Install `git` and `zlib` using pacman:
+## Ponyc Usage
+You must pass the `--pic` parameter to ponyc on Arch Linux
 ```
-sudo pacman -Syu git zlib
+ponyc --pic
+```
+
+## Ponyc install/test/uninstall
+### Prerequisites:
+
+Make dependicies: `git`,`make`,`gnupg` and optionaly `pandoc`
+Runtime dependicies: `zlib`, `ncurses5-compat-libs`
+
+Install `git`, `make`, `gnupg` and `zlib` using pacman:
+```
+sudo pacman -Syu git make gnupg zlib
 ```
 
 Install AUR package [`ncurses5-compat-libs`](https://aur.archlinux.org/packages/ncurses5-compat-libs/)
@@ -27,66 +36,18 @@ makepkg -si
 If you get a `FAILED (unknown public key xxxx)` see [Install pgp keys](#install-pgp-keys)
 
 ### Install:
-Clone the repo, change directory to the repo, run `makepkg -si`
-or use your favorite AUR package manager.
 ```
-git clone https://aur.archlinux.org/ponyc-rpm-bin.git
-cd ponyc-rpm-bin
-makepkg -si
+make install
 ```
-Again, if you get a `FAILED (unknown public key xxxx)` see [Install pgp keys](#install-pgp-keys)
+
+### Test:
+```
+make test
+```
 
 ### Uninstall:
 ```
-sudo pacman -Rs ponyc-rpm-bin
-```
-
-## Ponyc Usage
-You must pass the `--pic` parameter to ponyc on Arch Linux
-```
-ponyc --pic
-```
-
-## Example
-Create a directory `helloworld`, with the file `main.pony`,
-compile with `ponyc --pic` and then run `./helloworld`:
-```
-(mkdir helloworld ;\
-cd helloworld ;\
-echo 'actor Main
-  new create(env: Env) =>
-    env.out.print("Hello, world!")' > main.pony ;\
-ponyc --pic ;\
-./helloworld )
-```
-This should result in something like:
-```
-$ mkdir helloworld
-wink@wink-envy:~/prgs/ponylang
-$ cd helloworld
-wink@wink-envy:~/prgs/ponylang/helloworld
-$ echo 'actor Main
->   new create(env: Env) =>
->     env.out.print("Hello, world!")' > main.pony
-wink@wink-envy:~/prgs/ponylang/helloworld
-$ ponyc --pic
-Building builtin -> /usr/lib/pony/0.20.0-4003.0b2a2d2/packages/builtin
-Building . -> /home/wink/prgs/ponylang/helloworld
-Generating
- Reachability
- Selector painting
- Data prototypes
- Data types
- Function prototypes
- Functions
- Descriptors
-Optimising
-Writing ./helloworld.o
-Linking ./helloworld
-Warning: environment variable $CC undefined, using gcc as the linker
-wink@wink-envy:~/prgs/ponylang/helloworld
-$ ./helloworld
-Hello, world!
+make uninstall
 ```
 
 ## Install PGP keys
@@ -110,8 +71,6 @@ gpg: key 379CE192D401AB61: public key "Bintray (by JFrog) <bintray@bintray.com>"
 gpg: Total number processed: 1
 gpg:               imported: 1
 ```
-
-Now reexecute `makepkg -si` to install the package
 
 ## Acknowledgements
 This PKGBUILD was based on a guide from

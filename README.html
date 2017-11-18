@@ -1,62 +1,25 @@
 <h1 id="install-ponyc-binaries-from-.rpm-files">Install ponyc binaries from .rpm files</h1>
-<p>This installs ponyc using <code>makepkg -si</code> from the release .rpm files on <a href="https://bintray.com/pony-language/ponyc-rpm">bintray</a>.</p>
+<p>This installs ponyc from the release .rpm files on <a href="https://bintray.com/pony-language/ponyc-rpm">bintray</a>.</p>
 <p>The current ponyc package installed via pacman is not compatible with LLVM5 and fails, see Arch Linux bug <a href="https://bugs.archlinux.org/task/55170">55170</a> archlinux bug. It is also not possible to build ponyc from source for the same reason. <a href="https://github.com/ponylang/ponyc/pull/2303">Issue 2303</a> is tracking the problem.</p>
-<h2 id="pony-installuninstall-using-ponyc-rpm-bin">Pony install/uninstall using ponyc-rpm-bin</h2>
-<h3 id="prerequisites-git-zlib-ncurses5-compat-libs">Prerequisites: <code>git</code> <code>zlib</code> <code>ncurses5-compat-libs</code></h3>
-<p>Install <code>git</code> and <code>zlib</code> using pacman:</p>
-<pre><code>sudo pacman -Syu git zlib</code></pre>
+<h2 id="ponyc-usage">Ponyc Usage</h2>
+<p>You must pass the <code>--pic</code> parameter to ponyc on Arch Linux</p>
+<pre><code>ponyc --pic</code></pre>
+<h2 id="ponyc-installtestuninstall">Ponyc install/test/uninstall</h2>
+<h3 id="prerequisites">Prerequisites:</h3>
+<p>Make dependicies: <code>git</code>,<code>make</code>,<code>gnupg</code> and optionaly <code>pandoc</code> Runtime dependicies: <code>zlib</code>, <code>ncurses5-compat-libs</code></p>
+<p>Install <code>git</code>, <code>make</code>, <code>gnupg</code> and <code>zlib</code> using pacman:</p>
+<pre><code>sudo pacman -Syu git make gnupg zlib</code></pre>
 <p>Install AUR package <a href="https://aur.archlinux.org/packages/ncurses5-compat-libs/"><code>ncurses5-compat-libs</code></a> manually by cloning its git repo, and using makepkg to install. For example:</p>
 <pre><code>git clone https://aur.archlinux.org/ncurses5-compat-libs.git
 cd ncurses5-compat-libs
 makepkg -si</code></pre>
 <p>If you get a <code>FAILED (unknown public key xxxx)</code> see <a href="#install-pgp-keys">Install pgp keys</a></p>
 <h3 id="install">Install:</h3>
-<p>Clone the repo, change directory to the repo, run <code>makepkg -si</code> or use your favorite AUR package manager.</p>
-<pre><code>git clone https://aur.archlinux.org/ponyc-rpm-bin.git
-cd ponyc-rpm-bin
-makepkg -si</code></pre>
-<p>Again, if you get a <code>FAILED (unknown public key xxxx)</code> see <a href="#install-pgp-keys">Install pgp keys</a></p>
+<pre><code>make install</code></pre>
+<h3 id="test">Test:</h3>
+<pre><code>make test</code></pre>
 <h3 id="uninstall">Uninstall:</h3>
-<pre><code>sudo pacman -Rs ponyc-rpm-bin</code></pre>
-<h2 id="ponyc-usage">Ponyc Usage</h2>
-<p>You must pass the <code>--pic</code> parameter to ponyc on Arch Linux</p>
-<pre><code>ponyc --pic</code></pre>
-<h2 id="example">Example</h2>
-<p>Create a directory <code>helloworld</code>, with the file <code>main.pony</code>, compile with <code>ponyc --pic</code> and then run <code>./helloworld</code>:</p>
-<pre><code>mkdir helloworld
-cd helloworld
-echo &#39;actor Main
-  new create(env: Env) =&gt;
-    env.out.print(&quot;Hello, world!&quot;)&#39; &gt; main.pony
-ponyc --pic
-./helloworld</code></pre>
-<p>This should result in something like:</p>
-<pre><code>$ mkdir helloworld
-wink@wink-envy:~/prgs/ponylang
-$ cd helloworld
-wink@wink-envy:~/prgs/ponylang/helloworld
-$ echo &#39;actor Main
-&gt;   new create(env: Env) =&gt;
-&gt;     env.out.print(&quot;Hello, world!&quot;)&#39; &gt; main.pony
-wink@wink-envy:~/prgs/ponylang/helloworld
-$ ponyc --pic
-Building builtin -&gt; /usr/lib/pony/0.20.0-4003.0b2a2d2/packages/builtin
-Building . -&gt; /home/wink/prgs/ponylang/helloworld
-Generating
- Reachability
- Selector painting
- Data prototypes
- Data types
- Function prototypes
- Functions
- Descriptors
-Optimising
-Writing ./helloworld.o
-Linking ./helloworld
-Warning: environment variable $CC undefined, using gcc as the linker
-wink@wink-envy:~/prgs/ponylang/helloworld
-$ ./helloworld
-Hello, world!</code></pre>
+<pre><code>make uninstall</code></pre>
 <h2 id="install-pgp-keys">Install PGP keys</h2>
 <p>To install the gpg use <code>gpg --recv-keys &lt;public key fingerprint&gt;</code> where the short fingerprint, <code>379CE192D401AB61</code>, was printed in the error message:</p>
 <pre><code>==&gt; Verifying source file signatures with gpg...
